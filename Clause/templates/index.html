@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriContract Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AgriContract Analyzer</h1>
+            <p>Upload your agricultural contracts for risk analysis</p>
+        </header>
+        
+        <main>
+            <div class="upload-container">
+                <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+                    <div class="file-drop-area" id="drop-area">
+                        <input type="file" name="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg" required>
+                        <label for="file-input">
+                            <div class="file-message">
+                                <img src="{{ url_for('static', filename='img/upload.svg') }}" alt="Upload Icon">
+                                <p>Drag and drop your contract here or click to browse</p>
+                                <p class="file-info">Supported formats: PDF, PNG, JPG</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="selected-file" id="selected-file">
+                        <p>No file selected</p>
+                    </div>
+                    <button type="submit" class="analyze-btn">Analyze Contract</button>
+                </form>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Risk Detection</h3>
+                    <p>Identifies potentially risky clauses in your contracts</p>
+                </div>
+                <div class="feature">
+                    <h3>Agricultural Focus</h3>
+                    <p>Specialized for farming and agricultural contracts</p>
+                </div>
+                <div class="feature">
+                    <h3>Line-by-Line Analysis</h3>
+                    <p>Pinpoints exact locations of concerning language</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 AgriContract Analyzer | Privacy Policy | Terms of Service</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

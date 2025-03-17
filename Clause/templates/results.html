@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - AgriContract Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AgriContract Analyzer</h1>
+            <p>Analysis Results for: {{ filename }}</p>
+        </header>
+        
+        <main class="results-main">
+            <div class="results-summary">
+                <div class="summary-stats">
+                    <div class="stat">
+                        <h3>Total Clauses</h3>
+                        <p>{{ results.total_clauses }}</p>
+                    </div>
+                    <div class="stat high-risk">
+                        <h3>High Risk</h3>
+                        <p>{{ results.high_risk_count }}</p>
+                    </div>
+                    <div class="stat medium-risk">
+                        <h3>Medium Risk</h3>
+                        <p>{{ results.medium_risk_count }}</p>
+                    </div>
+                    <div class="stat low-risk">
+                        <h3>Low Risk</h3>
+                        <p>{{ results.low_risk_count }}</p>
+                    </div>
+                </div>
+                <a href="/" class="new-analysis-btn">Analyze Another Contract</a>
+            </div>
+            
+            <div class="results-content">
+                <h2>Risky Clauses Identified</h2>
+                
+                {% for clause in results.clauses %}
+                    {% if clause.risk_score > 0 %}
+                        <div class="clause-card 
+                            {% if clause.risk_score > 5 %}high-risk-card
+                            {% elif clause.risk_score > 2 %}medium-risk-card
+                            {% else %}low-risk-card{% endif %}">
+                            
+                            <div class="clause-header">
+                                <h3>Clause {{ clause.clause_id }}</h3>
+                                <div class="risk-badge 
+                                    {% if clause.risk_score > 5 %}high-risk-badge
+                                    {% elif clause.risk_score > 2 %}medium-risk-badge
+                                    {% else %}low-risk-badge{% endif %}">
+                                    {{ "High Risk" if clause.risk_score > 5 else "Medium Risk" if clause.risk_score > 2 else "Low Risk" }}
+                                </div>
+                            </div>
+                            
+                            <div class="clause-risk-lines">
+                                <h4>Highlighted Risk Lines:</h4>
+                                <ul class="risk-lines-list">
+                                    {% for line in clause.risk_lines %}
+                                        <li>
+                                            <span class="line-number">Line {{ line.line_number }} (Page {{ line.page }}):</span>
+                                            <span class="line-text">{{ line.text }}</span>
+                                            <span class="risk-terms">
+                                                Risk terms: {{ line.terms|join(", ") }}
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            <div class="clause-recommendations">
+                                <h4>Recommendations:</h4>
+                                <ul class="recommendations-list">
+                                    {% for rec in clause.recommendations %}
+                                        <li>
+                                            <span class="rec-category">{{ rec.category|replace("_", " ")|title }}:</span>
+                                            <span class="rec-text">{{ rec.recommendation }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            <div class="clause-text-toggle">
+                                <button class="toggle-btn">Show Full Text</button>
+                                <div class="clause-full-text hidden">
+                                    <pre>{{ clause.text }}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 AgriContract Analyzer | Privacy Policy | Terms of Service</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/results.js') }}"></script>
+</body>
+</html>
